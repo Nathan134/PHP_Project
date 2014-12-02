@@ -46,54 +46,7 @@ class NotesController extends AppController
             
 	}
 	
-	/*//HTML Notes
-	function html($id = null) 
-	{
-		
-	        $notesHtml = $this->Note->find('all', array(
-	        	'conditions' => array('Note.user_id' => $this->Auth->User('id'),
-									'Note.topic'=>"HTML")
-	        ));
-		
-		if($notesHtml == null)
-		{
-			$this->Session->setFlash(__('You dont have any notes yet. Why not Post one.', true));
-		}	
-	        $this->set('noteHtml', $notesHtml);  
-	}
 
-	//JAVASCRIPT Notes
-	function javascript($id = null) 
-	{
-		
-	        $notesJavascript = $this->Note->find('all', array(
-	        	'conditions' => array('Note.user_id' => $this->Auth->User('id'),
-									'Note.topic'=>"Javascript")
-	        ));
-		
-		if($notesJavascript == null)
-		{
-			$this->Session->setFlash(__('You dont have any notes yet. Why not Post one.', true));
-		}	
-	        $this->set('noteJavascript', $notesJavascript);  
-	}
-		
-	//PHP Notes
-	function php($id = null) 
-	{
-		
-	        $notesPhp = $this->Note->find('all', array(
-	        	'conditions' => array('Note.user_id' => $this->Auth->User('id'),
-									'Note.topic'=>"Javascript")
-	        ));
-		
-		if($notesPhp == null)
-		{
-			$this->Session->setFlash(__('You dont have any notes yet. Why not Post one.', true));
-		}	
-	        $this->set('notePhp', $notesPhp);  
-	}
-	*/
 	function add()
 	{
 		if ($this->request->is('post')) 
@@ -132,8 +85,7 @@ class NotesController extends AppController
 	{
 		
 	        $notesHtml = $this->Note->find('all', array(
-	        	'conditions' => array('Note.user_id' => $this->Auth->User('id'),
-										'Note.id'=>$id)));
+	        	'conditions' => array('Note.id'=>$id)));
 		
 		
 	        $this->set('notes', $notesHtml);  
@@ -187,18 +139,56 @@ class NotesController extends AppController
 	{
        	 $this->redirect($this->Auth->logout());
     	}
+	
 	function view_user_notes()
 	{
-	        $notes = $this->Note->find('all', array(
-	        	'conditions' => array('User.username' => $this->params['named']['id'])
-	        ));
-		if($notes == null)
+		$friend_one = $this->Note->Friend->find('all', array(
+		'conditions' => array('Friend.friend_one' => $this->Auth->User('username'),'Friend.friend_two'=> $this->params['named']['id'], 'Friend.status' => 1)
+		));
+		$friend_two = $this->Note->Friend->find('all', array(
+		'conditions' => array('Friend.friend_one'=> $this->params['named']['id'], 'Friend.friend_two' => $this->Auth->User('username'),'Friend.status' => 1)
+		));
+		
+		if($friend_one || $friend_two)
 		{
-			$this->Session->setFlash(__('Sorry no notes to view from this user', true));
-		}	
-	        $this->set('notes', $notes);  
+			
+		}
+		else
+		{
+			$this->Session->setFlash('Cannot view notes of this user');
+			$this->redirect('/friends/show_me');
+		}
+	}
+	
+	function view_user_note_topic()
+	{
+		$friend_one = $this->Note->Friend->find('all', array(
+		'conditions' => array('Friend.friend_one' => $this->Auth->User('username'),'Friend.friend_two'=> $this->params['named']['id'], 'Friend.status' => 1)
+		));
+		$friend_two = $this->Note->Friend->find('all', array(
+		'conditions' => array('Friend.friend_one'=> $this->params['named']['id'], 'Friend.friend_two' => $this->Auth->User('username'),'Friend.status' => 1)
+		));
+		
+		
+		if($friend_one || $friend_two)
+		{
+	        $notes = $this->Note->find('all', array(
+	        	'conditions' => array('User.username' => $this->params['named']['id'], 
+										'Note.topic'=> $this->params['named']['topic_id'])
+	        ));
+			if($notes == null)
+			{
+				$this->Session->setFlash(__('Sorry no notes to view from this user', true));
+			}	
+				$this->set('notes', $notes);  
+		}
+		else
+		{
+			$this->Session->setFlash(__('Cannot view notes of this user', true));
+		}
 		
 	}
+	
    
     
 }

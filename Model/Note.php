@@ -38,5 +38,19 @@ class Note extends AppModel {
 			'order' => ''
 		)
 	);
-	 
+	 public $hasMany = array(
+		'Friend' => array(
+			'className' => 'Friend',
+			'foreignKey' => 'id',
+			'dependent' => false,
+			'conditions' => '',
+			'fields' => '',
+			'order' => '',
+			'limit' => '',
+			'offset' => '',
+			'exclusive' => '',
+			'finderQuery' => '',
+			'counterQuery' => ''
+		)
+	);
 }

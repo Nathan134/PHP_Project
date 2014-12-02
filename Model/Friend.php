@@ -29,6 +29,29 @@ class Friend extends AppModel {
 			'conditions' => '',
 			'fields' => '',
 			'order' => ''
+		),
+		'Notes' => array(
+			'className' => 'Notes',
+			'foreignKey' => 'id',
+			'conditions' => '',
+			'fields' => '',
+			'order' => ''
+		),
+	);
+	
+	public $hasMany = array(
+		'Note' => array(
+			'className' => 'Note',
+			'foreignKey' => 'id',
+			'dependent' => false,
+			'conditions' => '',
+			'fields' => '',
+			'order' => '',
+			'limit' => '',
+			'offset' => '',
+			'exclusive' => '',
+			'finderQuery' => '',
+			'counterQuery' => ''
 		)
 	);
 }
