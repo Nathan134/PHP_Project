@@ -1,16 +1,17 @@
 
 <h1>Notes</h1>
 <table>
+
 <?php foreach ($notes as $note): ?>
-<tr>
-	
-<td><?php echo $note['Note']['body'];?></td>
-<tr>
-	
-<?php endforeach; ?>
+	<h3>Title: <?php echo $note['Note']['title'] ;?></h3>
+	<hr>
+	<tr>
+		<td>
+		<pre style="line-height:0.8em;"><?php echo $note['Note']['body']; ?></pre>
+		</td>
+	<tr>
+	<?php endforeach; ?>
 </table>
-<?php echo "<hr>" ;?>
-   
-    
-    <?php unset($post); ?>
-</table>
+
+<?php unset($post); ?>
+

@@ -26,27 +26,6 @@ class NotesController extends AppController
 		
 	}
 
-	function view($id = null) 
-	{
-		
-	        $notes = $this->Note->find('all', array(
-	        	'conditions' => array('Note.user_id' => $this->Auth->User('id'))
-	        ));
-		
-		if($notes == null)
-		{
-			$this->Session->setFlash(__('You dont have any notes yet. Why not Post one.', true));
-		}	
-	        $this->set('notes', $notes);  
-		
-		
-                
-		
-		
-            
-	}
-	
-
 	function add()
 	{
 		if ($this->request->is('post')) 
@@ -84,11 +63,11 @@ class NotesController extends AppController
 	function view_this_note($id)
 	{
 		
-	        $notesHtml = $this->Note->find('all', array(
+	        $notePost = $this->Note->find('all', array(
 	        	'conditions' => array('Note.id'=>$id)));
 		
 		
-	        $this->set('notes', $notesHtml);  
+	        $this->set('notes', $notePost);  
 		
 	        
 	       
@@ -135,7 +114,8 @@ class NotesController extends AppController
 		
 		$this->redirect('index');
 	}
-    	function logout() 
+    
+	function logout() 
 	{
        	 $this->redirect($this->Auth->logout());
     	}
